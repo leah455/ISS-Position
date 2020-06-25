@@ -2,6 +2,7 @@ from requests import get
 from uszipcode import SearchEngine
 import geopy.distance
 import tkinter as tk
+import matplotlib.pyplot as plt
 import mplleaflet
 
 #Get request from International Space Station API
@@ -62,3 +63,7 @@ result_label.grid(row=0, column=3, padx=10)
 
 #Display window
 window.mainloop()
+
+#Display map of ISS current location
+plt.plot(iss_longitude, iss_latitude, 'rs')
+mplleaflet.show()
