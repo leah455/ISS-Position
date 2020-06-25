@@ -4,45 +4,61 @@ import geopy.distance
 import tkinter as tk
 import mplleaflet
 
-
+#Get request from International Space Station API
 request = get('http://api.open-notify.org/iss-now.json')
 iss_info = request.json()
+
+#Get ISS latitude and longitude 
 iss_position = iss_info['iss_position']
 iss_latitude = iss_position['latitude']
 iss_longitude = iss_position['longitude']
 iss_coordinates = (iss_latitude, iss_longitude)
 
+#Calculate distance from entered zipcode to the ISS
 def distance_to_iss():
+    #Get zipcode from GUI entry
     zipcode = zipcode_entry.get()
+
+    #Get information about zipcode
     search = SearchEngine(simple_zipcode=True)
     zipcode_search = search.by_zipcode(zipcode)
+
+    #Get zipcode latitude and longitude
     zipcode_latitude = zipcode_search.lat
     zipcode_longitude = zipcode_search.lng
     zipcode_coordinates = (zipcode_latitude, zipcode_longitude)
 
+    #Calculate distance using zipcode and ISS coordinates
     distance = geopy.distance.distance(iss_coordinates, zipcode_coordinates).mi
 
+    #Display results rounded to the 2 decimal place
     result_label['text'] = f"{round(distance, 2)} miles away"
 
-
+#Create GUI window
 window = tk.Tk()
 window.title("International Space Station")
 
+#Create zipcode entry box
 zipcode_entry = tk.Entry(window, width=15)
 zipcode_label = tk.Label(window, text="Enter Zipcode")
 
+#Place zipcode entry in window
 zipcode_entry.grid(row=0, column=0)
 zipcode_label.grid(row=1, column=0)
 
+#Create button to calculate distance
 button = tk.Button(
     master=window,
     text="Find ISS",
     command=distance_to_iss)
 
+#Label result
 result_label = tk.Label(master=window, text="miles away")
 
+#Place GUI widgets in window
 zipcode_entry.grid(row=0, column=0, padx=10)
 button.grid(row=0, column=2, pady=10)
 result_label.grid(row=0, column=3, padx=10)
 
+#Display window
 window.mainloop()
