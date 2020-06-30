@@ -2,8 +2,6 @@ from requests import get
 from uszipcode import SearchEngine
 import geopy.distance
 import tkinter as tk
-import matplotlib.pyplot as plt
-import mplleaflet
 
 #Get request from International Space Station API
 request = get('http://api.open-notify.org/iss-now.json')
